@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+.env.local
+.venv/
+*.ehpk
+glasses_*.png
+apps/whatsapp/bridge/auth/
+apps/whatsapp/bridge/data/

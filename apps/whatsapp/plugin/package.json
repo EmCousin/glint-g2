@@ -1,0 +1,22 @@
+{
+  "name": "@glint-whatsapp/plugin",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --strictPort",
+    "build": "vite build",
+    "test": "node --test",
+    "simulate": "evenhub-simulator http://localhost:5173",
+    "pack": "npm run build && evenhub pack app.json dist -o glint-whatsapp.ehpk --sdk-ver 0.0.14"
+  },
+  "dependencies": {
+    "@glint/g2-plugin": "*"
+  },
+  "devDependencies": {
+    "@evenrealities/even_hub_sdk": "^0.0.14",
+    "@evenrealities/evenhub-cli": "^0.1.14",
+    "@evenrealities/evenhub-simulator": "^0.9.5",
+    "vite": "^7.0.0"
+  }
+}

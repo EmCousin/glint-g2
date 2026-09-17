@@ -1,0 +1,17 @@
+{
+  "name": "@glint-whatsapp/bridge",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env src/index.js",
+    "start": "NODE_ENV=production node --env-file-if-exists=.env src/index.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@glint/bridge": "*",
+    "@whiskeysockets/baileys": "^6.7.18",
+    "pino": "^9.7.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}

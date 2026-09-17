@@ -1,0 +1,14 @@
+{
+  "name": "@glint/bridge",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": "./index.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@glint/g2-plugin",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/main.js",
+    "./api": "./src/api.js",
+    "./format": "./src/format.js",
+    "./gestures": "./src/gestures.js",
+    "./layout": "./src/layout.js",
+    "./mobile": "./src/mobile.js",
+    "./styles.css": "./src/styles.css"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@evenrealities/even_hub_sdk": "^0.0.14"
+  }
+}
