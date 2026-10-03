@@ -137,5 +137,19 @@ export function createWhatsAppTransport({
     status() {
       return connectionState
     },
+    statusDetail() {
+      switch (connectionState) {
+        case 'logged_out':
+          return 'WhatsApp session expired. Delete the auth directory and restart the bridge to re-link.'
+        case 'disconnected':
+          return 'WhatsApp is disconnected. The bridge will retry automatically.'
+        case 'connecting':
+          return 'Connecting to WhatsApp…'
+        case 'reconnecting':
+          return 'Reconnecting to WhatsApp…'
+        default:
+          return null
+      }
+    },
   }
 }

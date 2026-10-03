@@ -22,6 +22,7 @@ app.use((_request, response, next) => {
 })
 
 const registry = []
+const failedProviders = []
 const cleanups = []
 
 // ---------------------------------------------------------------------------
@@ -50,6 +51,7 @@ if (enabledProviders.includes('signal')) {
     console.log(`Mounted: signal (${providerName})`)
   } catch (error) {
     console.error('Failed to mount signal:', error)
+    failedProviders.push({ id: 'signal', name: 'Signal', error: error.message })
   }
 }
 
@@ -80,6 +82,7 @@ if (enabledProviders.includes('whatsapp')) {
     console.log(`Mounted: whatsapp (${providerName})`)
   } catch (error) {
     console.error('Failed to mount whatsapp:', error)
+    failedProviders.push({ id: 'whatsapp', name: 'WhatsApp', error: error.message })
   }
 }
 
@@ -100,6 +103,7 @@ if (enabledProviders.includes('hey')) {
     console.log(`Mounted: hey (${providerName})`)
   } catch (error) {
     console.error('Failed to mount hey:', error)
+    failedProviders.push({ id: 'hey', name: 'HEY', error: error.message })
   }
 }
 
@@ -107,20 +111,28 @@ if (enabledProviders.includes('hey')) {
 // Provider discovery
 // ---------------------------------------------------------------------------
 app.get('/providers', (_request, response) => {
-  response.json({
-    providers: registry.map(({ id, name, capabilities, sender }) => {
-      const connection = sender.status?.()
-      return {
-        id,
-        name,
-        status: connection && connection !== 'open' ? connection : 'ok',
-        capabilities: {
-          reactions: capabilities.reactions,
-          quotedReplies: capabilities.quotedReplies,
-        },
-      }
-    }),
+  const mounted = registry.map(({ id, name, capabilities, sender }) => {
+    const connection = sender.status?.()
+    const detail = sender.statusDetail?.()
+    return {
+      id,
+      name,
+      status: connection && connection !== 'open' ? connection : 'ok',
+      ...(detail ? { detail } : {}),
+      capabilities: {
+        reactions: capabilities.reactions,
+        quotedReplies: capabilities.quotedReplies,
+      },
+    }
   })
+  const failed = failedProviders.map(({ id, name, error }) => ({
+    id,
+    name,
+    status: 'error',
+    detail: error,
+    capabilities: { reactions: false, quotedReplies: false },
+  }))
+  response.json({ providers: [...mounted, ...failed] })
 })
 
 app.get('/health', (_request, response) => {

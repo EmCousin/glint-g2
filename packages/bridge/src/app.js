@@ -71,10 +71,12 @@ export function createBridgeApp({
 
   app.get('/health', (_request, response) => {
     const connection = sender.status?.()
+    const detail = sender.statusDetail?.()
     response.json({
       status: connection && connection !== 'open' ? connection : 'ok',
       provider: provider.name,
       ...(connection ? { connection } : {}),
+      ...(detail ? { detail } : {}),
     })
   })
 

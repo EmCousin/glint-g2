@@ -148,6 +148,52 @@ async function fetchProviders() {
 }
 
 // -----------------------------------------------------------------------
+// Provider status helpers
+// -----------------------------------------------------------------------
+const LAUNCHABLE_STATUSES = new Set(['ok', 'connecting', 'reconnecting'])
+
+function isLaunchable(provider) {
+  return LAUNCHABLE_STATUSES.has(provider.status)
+}
+
+function providerPickerLabel(provider) {
+  if (isLaunchable(provider)) return provider.name
+  if (provider.status === 'error') return `${provider.name} — setup error`
+  if (provider.status === 'unavailable') return `${provider.name} — not installed`
+  if (provider.status === 'logged_out') return `${provider.name} — logged out`
+  if (provider.status === 'disconnected') return `${provider.name} — offline`
+  return `${provider.name} — ${provider.status}`
+}
+
+// -----------------------------------------------------------------------
+// Mobile companion — provider status cards
+// -----------------------------------------------------------------------
+function renderProviderStatusCards(providers) {
+  const panel = document.querySelector('#provider-status-panel')
+  const list = document.querySelector('#provider-status-list')
+  if (!panel || !list) return
+
+  const hasIssues = providers.some((p) => !isLaunchable(p))
+  if (!hasIssues) {
+    panel.hidden = true
+    return
+  }
+
+  panel.hidden = false
+  list.innerHTML = providers
+    .filter((p) => !isLaunchable(p))
+    .map((p) => {
+      const detail = p.detail ?? `${p.name} is ${p.status}.`
+      return `<div class="provider-status-card" data-status="${p.status}">
+        <strong>${p.name}</strong>
+        <span class="provider-status-badge">${p.status}</span>
+        <p class="provider-status-detail">${detail}</p>
+      </div>`
+    })
+    .join('')
+}
+
+// -----------------------------------------------------------------------
 // Launch a selected provider via startGlintPlugin
 // -----------------------------------------------------------------------
 async function launchProvider(providerId, capabilities) {
@@ -171,7 +217,7 @@ async function launchProvider(providerId, capabilities) {
     replyFailureDetail: config.replyFailureDetail,
     capabilities: capabilities ?? {},
     onBack: () => {
-      setBadge('Pick a provider')
+      setBadge('Selecting...')
       showProviderPicker(providers)
       runProviderPicker(providers)
     },
@@ -208,7 +254,7 @@ function showProviderPicker(providers) {
       itemCount: providers.length,
       itemWidth: 548,
       isItemSelectBorderEn: 1,
-      itemName: providers.map((p) => p.name),
+      itemName: providers.map((p) => providerPickerLabel(p)),
     }),
     isEventCapture: 1,
     zOrderIndex: 1,
@@ -244,10 +290,27 @@ function runProviderPicker(providers) {
     const index = event.listEvent?.currentSelectItemIndex
     if (Number.isInteger(index) && index >= 0 && index < providers.length) {
       selectedIndex = index
+      setBadge(providers[selectedIndex].name)
     }
 
     if (gesture === 'click') {
       const selected = providers[selectedIndex]
+      if (!isLaunchable(selected)) {
+        const detail = selected.detail ?? `${selected.name} is not available.`
+        showStatus(`${selected.name}\n\n${detail}\n\nPress to go back`).catch(console.error)
+        setBadge(`${selected.name}: ${selected.status}`, 'error')
+        const detailUnsub = bridge.onEvenHubEvent((detailEvent) => {
+          const detailGesture = gestureFromEvent(detailEvent)
+          if (detailGesture === 'click' || detailGesture === 'doubleClick') {
+            detailUnsub()
+            setBadge('Selecting...')
+            showProviderPicker(providers)
+            runProviderPicker(providers)
+          }
+        })
+        unsubscribe()
+        return
+      }
       unsubscribe()
       bridge.setLocalStorage(`${APP_ID}.provider`, selected.id).catch(console.error)
       launchProvider(selected.id, selected.capabilities).catch(console.error)
@@ -326,14 +389,16 @@ if (!providers) {
   bridge.onEvenHubEvent((event) => {
     if (gestureFromEvent(event) === 'doubleClick') bridge.shutDownPageContainer(1)
   })
-} else if (storedProvider && providers.some((p) => p.id === storedProvider)) {
+} else if (storedProvider && providers.some((p) => p.id === storedProvider && isLaunchable(p))) {
   // Stored provider is available — launch it directly
   initMobileCompanion()
+  renderProviderStatusCards(providers)
   const provider = providers.find((p) => p.id === storedProvider)
   await launchProvider(storedProvider, provider.capabilities)
 } else {
   // No stored provider or it's unavailable — show the picker
-  setBadge('Pick a provider')
+  setBadge('Selecting...')
   initMobileCompanion()
+  renderProviderStatusCards(providers)
   runProviderPicker(providers)
 }

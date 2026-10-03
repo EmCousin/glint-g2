@@ -104,6 +104,25 @@ export function createSignalSender({
   account = process.env.SIGNAL_ACCOUNT,
   request = signalRequest,
 } = {}) {
+  let connectionState = 'connecting'
+  let connectionDetail = null
+
+  // Probe signal-cli availability in the background.
+  request('listAccounts')
+    .then(() => { connectionState = 'open' })
+    .catch((error) => {
+      connectionState = 'disconnected'
+      const msg = error?.message ?? ''
+      if (/ENOENT|ECONNREFUSED|EACCES/i.test(msg)) {
+        connectionDetail = 'signal-cli socket not found. Start the daemon:\nsignal-cli -a +NUMBER daemon --socket'
+      } else if (/timed? ?out/i.test(msg)) {
+        connectionDetail = 'signal-cli is not responding. Restart the daemon and check the SIGNAL_SOCKET path.'
+      } else {
+        connectionDetail = `signal-cli error: ${msg || 'unknown'}`
+      }
+      console.error(`Signal probe failed: ${connectionDetail}`)
+    })
+
   async function resolveAccount() {
     if (account) return account
     const accounts = await request('listAccounts')
@@ -138,6 +157,8 @@ export function createSignalSender({
   }
 
   return {
+    status() { return connectionState },
+    statusDetail() { return connectionDetail },
     async send(target, message, quote = null) {
       const selectedAccount = await resolveAccount()
       const params = { account: selectedAccount, message }

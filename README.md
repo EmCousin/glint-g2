@@ -224,3 +224,46 @@ After packing, install the `.ehpk` on the glasses through the Even Hub:
 2. Transfer the `.ehpk` file to your phone
 3. Open the Even app and install the package
 4. Open the plugin's mobile companion to enter the bridge URL and token
+
+## Troubleshooting
+
+When a provider is not set up correctly on the workstation, the bridge
+probes it at startup and reports the issue. The glasses show the error
+in the provider picker; the mobile companion shows a status card with
+the detail.
+
+### Common setup errors
+
+| What you see on the device | Cause | Fix |
+|---|---|---|
+| **Signal — offline** / "signal-cli socket not found" | signal-cli daemon is not running | Start it: `signal-cli -a +NUMBER daemon --socket` |
+| **Signal — offline** / "signal-cli is not responding" | Daemon is running but the socket path is wrong | Check `SIGNAL_SOCKET` in your `.env` and verify with `ls /run/user/$(id -u)/signal-cli/socket` |
+| **WhatsApp — logged out** | WhatsApp session expired on the phone | Delete `data/whatsapp-auth/`, restart the bridge, and scan the new QR code |
+| **WhatsApp — offline** | Baileys lost its connection | The bridge retries automatically. If it persists, restart the bridge. |
+| **HEY — not installed** | `hey` CLI binary not found | Install the [HEY CLI](https://github.com/basecamp/hey-cli) and ensure it is on your `PATH` (or set `HEY_PATH`) |
+| **HEY — not installed** / "not authenticated" | CLI is installed but not logged in | Run `hey login` on the workstation |
+| **Bridge unavailable** | The glasses cannot reach the bridge at all | Verify Tailscale is running on both devices and the bridge URL is correct |
+| **Setup required** | No bridge URL or token configured | Open the mobile companion and enter the endpoint and token |
+| **Provider — setup error** | Provider crashed during bridge startup | Check `journalctl --user -u glint-*-bridge -f` for the full error |
+
+### Verifying workstation setup
+
+Use these commands to check each provider independently before
+connecting from the glasses:
+
+```sh
+# Bridge health (unified)
+curl -s http://127.0.0.1:8786/health | jq .
+
+# Provider status (unified — includes detail for broken providers)
+curl -s http://127.0.0.1:8786/providers | jq .
+
+# Signal: verify signal-cli is reachable
+echo '{"jsonrpc":"2.0","id":1,"method":"listAccounts"}' | socat - UNIX-CONNECT:/run/user/$(id -u)/signal-cli/socket
+
+# WhatsApp: check connection state
+curl -s http://127.0.0.1:8786/whatsapp/health | jq .
+
+# HEY: verify CLI works
+hey whoami
+```
