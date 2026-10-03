@@ -1,0 +1,58 @@
+.provider-fieldset {
+  border: 1px solid #31483a;
+  border-radius: 12px;
+  padding: 14px;
+  margin: 6px 0 0;
+}
+
+.provider-fieldset legend {
+  color: #aab9af;
+  font-size: 0.78rem;
+  font-weight: 650;
+  padding: 0 6px;
+}
+
+.provider-radios {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.provider-option {
+  flex: 1;
+  min-width: 90px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid #31483a;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  margin: 0;
+}
+
+.provider-option:has(input:checked) {
+  border-color: #47cf72;
+  background: rgba(71, 207, 114, 0.08);
+}
+
+.provider-option.unavailable {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.provider-option input[type="radio"] {
+  width: 16px;
+  min-height: auto;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  accent-color: #47cf72;
+}
+
+.provider-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #e8f3eb;
+}

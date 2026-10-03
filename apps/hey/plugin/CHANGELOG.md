@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.4
+
+- Use the shared Glint G2 plugin runtime without changing HEY capabilities.
+
 ## 0.1.3
 
 - Load older Imbox pages automatically when scrolling near the end of the thread list.

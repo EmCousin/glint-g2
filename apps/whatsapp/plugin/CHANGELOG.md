@@ -2,6 +2,10 @@
 
 All notable changes to the Glint WhatsApp plugin are documented here. Even Hub appears to ignore a re-upload at an unchanged `app.json` version, so every hardware build must increment the version.
 
+## 0.1.4
+
+- Use the shared Glint G2 plugin runtime without changing WhatsApp capabilities.
+
 ## 0.1.3
 
 - Load older conversations and retained messages automatically at list boundaries.

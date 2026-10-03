@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glint</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Even G2 companion</p>
+          <h1>Glint</h1>
+        </div>
+        <span id="connection-badge" class="connection-badge">Connecting</span>
+      </header>
+
+      <section class="preview-panel" aria-labelledby="preview-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Live view</p>
+            <h2 id="preview-title">Glasses display</h2>
+          </div>
+          <span>576 &times; 288</span>
+        </div>
+        <div class="display-frame">
+          <svg id="glasses-preview" viewBox="0 0 576 288" role="img" aria-label="Current glasses display"></svg>
+        </div>
+        <p class="preview-note">Content and selection mirror the glasses. Font rendering may differ slightly on the G2.</p>
+      </section>
+
+      <section class="settings-panel" aria-labelledby="settings-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Connection</p>
+            <h2 id="settings-title">Bridge</h2>
+          </div>
+        </div>
+        <form id="unified-settings">
+          <label for="base-url">Bridge endpoint</label>
+          <input id="base-url" name="url" type="url" inputmode="url" autocomplete="url" placeholder="https://bridge.example.ts.net" required />
+          <p class="field-note">The URL of your unified Glint bridge. Packaged builds can only reach origins approved in the manifest.</p>
+
+          <label for="base-token">Token</label>
+          <input id="base-token" name="token" type="password" autocomplete="off" placeholder="Leave blank to keep the saved token" />
+
+          <button type="submit">Save and connect</button>
+          <p id="unified-status" class="settings-status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

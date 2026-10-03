@@ -1,7 +1,7 @@
 {
   "name": "glint-g2",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "workspaces": [
     "packages/*",
@@ -11,25 +11,30 @@
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "pack": "npm run pack:signal && npm run pack:whatsapp && npm run pack:hey",
+    "pack": "npm run pack:signal && npm run pack:whatsapp && npm run pack:hey && npm run pack:unified",
     "pack:signal": "npm run pack --workspace @glint-signal/plugin",
     "pack:whatsapp": "npm run pack --workspace @glint-whatsapp/plugin",
     "pack:hey": "npm run pack --workspace @glint-hey/plugin",
+    "pack:unified": "npm run pack --workspace @glint/unified-plugin",
     "dev:signal:plugin": "npm run dev --workspace @glint-signal/plugin",
     "dev:signal:bridge": "npm run dev --workspace @glint-signal/bridge",
     "dev:whatsapp:plugin": "npm run dev --workspace @glint-whatsapp/plugin",
     "dev:whatsapp:bridge": "npm run dev --workspace @glint-whatsapp/bridge",
     "dev:hey:plugin": "npm run dev --workspace @glint-hey/plugin",
     "dev:hey:bridge": "npm run dev --workspace @glint-hey/bridge",
+    "dev:unified:plugin": "npm run dev --workspace @glint/unified-plugin",
+    "dev:unified:bridge": "npm run dev --workspace @glint/unified-bridge",
     "simulate:signal": "concurrently --kill-others -n bridge,plugin,simulator \"BRIDGE_TOKEN=glint-signal-dev npm run dev:signal:bridge\" \"VITE_BRIDGE_URL=http://127.0.0.1:8787 VITE_BRIDGE_TOKEN=glint-signal-dev npm run dev:signal:plugin\" \"wait-on http://127.0.0.1:8787/health http://127.0.0.1:5173 && npm run simulate --workspace @glint-signal/plugin\"",
     "simulate:signal:gurk": "concurrently --kill-others -n bridge,plugin,simulator \"SIGNAL_PROVIDER=gurk BRIDGE_TOKEN=glint-signal-dev PORT=8797 npm run dev:signal:bridge\" \"VITE_BRIDGE_URL=http://127.0.0.1:8797 VITE_BRIDGE_TOKEN=glint-signal-dev npm run dev:signal:plugin -- --port 5197\" \"wait-on http://127.0.0.1:8797/health http://127.0.0.1:5197 && npm exec --workspace @glint-signal/plugin -- evenhub-simulator http://localhost:5197\"",
     "simulate:whatsapp": "concurrently --kill-others -n bridge,plugin,simulator \"PORT=8788 BRIDGE_TOKEN=glint-whatsapp-dev npm run dev:whatsapp:bridge\" \"VITE_BRIDGE_URL=http://127.0.0.1:8788 VITE_BRIDGE_TOKEN=glint-whatsapp-dev npm run dev:whatsapp:plugin -- --port 5174\" \"wait-on http://127.0.0.1:8788/health http://127.0.0.1:5174 && npm exec --workspace @glint-whatsapp/plugin -- evenhub-simulator http://localhost:5174\"",
     "simulate:whatsapp:live": "MESSAGING_PROVIDER=whatsapp npm run simulate:whatsapp",
     "simulate:hey": "concurrently --kill-others -n bridge,plugin,simulator \"PORT=8789 BRIDGE_TOKEN=glint-hey-dev npm run dev:hey:bridge\" \"VITE_BRIDGE_URL=http://127.0.0.1:8789 VITE_BRIDGE_TOKEN=glint-hey-dev npm run dev:hey:plugin -- --port 5175\" \"wait-on http://127.0.0.1:8789/health http://127.0.0.1:5175 && npm exec --workspace @glint-hey/plugin -- evenhub-simulator http://localhost:5175\"",
     "simulate:hey:live": "HEY_PROVIDER=hey npm run simulate:hey",
+    "simulate:unified": "concurrently --kill-others -n bridge,plugin,simulator \"BRIDGE_TOKEN=glint-dev npm run dev:unified:bridge\" \"VITE_BRIDGE_URL=http://127.0.0.1:8786 VITE_BRIDGE_TOKEN=glint-dev npm run dev:unified:plugin -- --port 5176\" \"wait-on http://127.0.0.1:8786/health http://127.0.0.1:5176 && npm exec --workspace @glint/unified-plugin -- evenhub-simulator http://localhost:5176\"",
     "start:signal": "npm run start --workspace @glint-signal/bridge",
     "start:whatsapp": "npm run start --workspace @glint-whatsapp/bridge",
-    "start:hey": "npm run start --workspace @glint-hey/bridge"
+    "start:hey": "npm run start --workspace @glint-hey/bridge",
+    "start:unified": "npm run start --workspace @glint/unified-bridge"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

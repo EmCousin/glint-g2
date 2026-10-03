@@ -93,6 +93,7 @@ export async function loadBridgeSettings(bridge, appId, defaults) {
 export function initializeMobileCompanion({ appId, bridge, settings, onSave }) {
   const keys = storageKeys(appId)
   const form = document.querySelector('#bridge-settings')
+  if (!form) return
   const urlInput = document.querySelector('#bridge-url')
   const tokenInput = document.querySelector('#bridge-token')
   const status = document.querySelector('#settings-status')

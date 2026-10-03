@@ -4,6 +4,10 @@ All notable changes to the Glint Signal plugin, by `app.json` version. Even Hub
 appears to no-op a re-upload at an unchanged version number, so every real
 hardware test needs a bump even without a code change.
 
+## 0.1.31 (shared monorepo runtime)
+
+- Use the shared Glint G2 plugin runtime without changing Signal capabilities.
+
 ## 0.1.30 (automatic history pagination)
 
 - Load older conversations and messages automatically at list boundaries.

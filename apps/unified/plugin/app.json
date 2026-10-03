@@ -1,21 +1,21 @@
 {
-  "package_id": "dev.emmanuelcousin.glintwhatsapp",
+  "package_id": "dev.emmanuelcousin.glint",
   "edition": "202601",
-  "name": "Glint WhatsApp",
-  "version": "0.1.4",
+  "name": "Glint",
+  "version": "0.2.0",
   "min_sdk_version": "0.0.14",
   "entrypoint": "index.html",
   "permissions": [
     {
       "name": "network",
-      "desc": "Connects to your private Glint WhatsApp bridge to show messages and transcribe replies.",
+      "desc": "Connects to your private Glint bridge to show messages from Signal, WhatsApp, and HEY.",
       "whitelist": [
         "https://emmanuel-workstation.tailad8847.ts.net"
       ]
     },
     {
       "name": "g2-microphone",
-      "desc": "Captures your voice while you hold to dictate a WhatsApp reply."
+      "desc": "Captures your voice while you hold to dictate a reply."
     }
   ],
   "supported_languages": [

@@ -1,14 +1,14 @@
 {
-  "name": "@glint-signal/plugin",
+  "name": "@glint/unified-plugin",
   "private": true,
-  "version": "0.1.31",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --strictPort",
     "build": "vite build",
     "test": "node --test",
     "simulate": "evenhub-simulator http://localhost:5173",
-    "pack": "npm run build && evenhub pack app.json dist -o glint-signal.ehpk --sdk-ver 0.0.14"
+    "pack": "npm run build && evenhub pack app.json dist -o glint.ehpk --sdk-ver 0.0.14"
   },
   "dependencies": {
     "@glint/g2-plugin": "*"

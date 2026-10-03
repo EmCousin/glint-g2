@@ -29,6 +29,7 @@ const {
   emptyStateDetail = `The bridge returned no ${appName} conversations.`,
   replyFailureDetail = `The draft expired or ${appName} was unavailable.`,
   allowedHealthProviders,
+  onBack,
   capabilities: {
     reactions = false,
     quotedReplies = false,
@@ -554,6 +555,9 @@ function handleDoubleClick() {
     deselectAndShowIdle()
   } else if (state.view === 'messages') {
     showConversationList().catch(console.error)
+  } else if (onBack) {
+    handleExit()
+    onBack()
   } else {
     bridge.shutDownPageContainer(1)
   }
