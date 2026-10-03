@@ -9,6 +9,7 @@ import {
 } from '@evenrealities/even_hub_sdk'
 import { startGlintPlugin } from '@glint/g2-plugin'
 import { gestureFromEvent } from '@glint/g2-plugin/gestures'
+import { renderMobilePage, renderMobileStatus, updateMobileListSelection } from '@glint/g2-plugin/mobile'
 import '@glint/g2-plugin/styles.css'
 import './styles.css'
 
@@ -120,6 +121,7 @@ async function showStatus(text) {
       textObject: [statusContainer(text)],
     }),
   )
+  renderMobileStatus(text)
 }
 
 // -----------------------------------------------------------------------
@@ -266,6 +268,8 @@ function showProviderPicker(providers) {
       listObject: [list],
     }),
   ).catch(console.error)
+
+  renderMobilePage([title], [list])
 }
 
 function runProviderPicker(providers) {
@@ -291,6 +295,7 @@ function runProviderPicker(providers) {
     if (Number.isInteger(index) && index >= 0 && index < providers.length) {
       selectedIndex = index
       setBadge(providers[selectedIndex].name)
+      updateMobileListSelection(selectedIndex)
     }
 
     if (gesture === 'click') {
