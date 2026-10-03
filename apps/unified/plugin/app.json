@@ -2,7 +2,7 @@
   "package_id": "dev.emmanuelcousin.glint",
   "edition": "202601",
   "name": "Glint",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "min_sdk_version": "0.0.14",
   "entrypoint": "index.html",
   "permissions": [

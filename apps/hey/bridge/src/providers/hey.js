@@ -52,7 +52,7 @@ export function createHeyProvider({
   }
 
   // Probe HEY CLI availability in the background.
-  execute(['whoami', '--json'])
+  execute(['auth', 'status', '--json'])
     .then(() => { connectionState = 'open' })
     .catch((error) => {
       const msg = error?.message ?? ''
