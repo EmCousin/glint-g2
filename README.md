@@ -1,5 +1,7 @@
 # Glint G2
 
+Licensed under the [MIT License](LICENSE).
+
 Private Even G2 integrations for Signal, WhatsApp, and HEY. Each provider
 runs as an HTTP bridge on the workstation; the glasses plugin connects to
 the bridge over Tailscale to display conversations and transcribe voice
