@@ -1,12 +1,14 @@
 # Glint G2
 
+Source code for the [Glint plugin for Even G2 glasses](https://hub.evenrealities.com/landing?package_id=dev.emmanuelcousin.glint).
+
 Read Signal, WhatsApp, and HEY conversations on Even G2 glasses and reply by
 voice. Glint runs a bridge on your computer and connects to it through Tailscale.
 The unified app lets you switch between all three services on the glasses.
 
 ## Set up your computer
 
-Use a Linux computer that stays on, Node.js 22 or newer, npm, OpenSSL, and
+Use a computer that stays on, Node.js 22 or newer, npm, OpenSSL, and
 [Tailscale](https://tailscale.com/download). Install Python 3 with virtualenv
 support if you want voice replies. Sign in to the same Tailscale network on
 your computer and phone.
